@@ -1,6 +1,19 @@
 defmodule Simplestack.Server do
   use GenServer
+  # External API
+  def start_link(init_list) do
+    GenServer.start_link(__MODULE__, init_list, name: __MODULE__)
+  end
   
+  def pop do
+    GenServer.call __MODULE__, :pop
+  end
+  
+  def push(value) do
+    GenServer.cast __MODULE__, {:push, value}
+  end
+  
+  # GenServer Implementation
   def init(init_list) do
     {:ok, init_list}
   end
