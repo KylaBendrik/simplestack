@@ -18,11 +18,20 @@ defmodule Simplestack.Server do
     {:ok, init_list}
   end
   
+  def handle_call(:pop, _from, []) do
+    IO.puts "Stack has been over-popped. Quiting now! Toodles, y'all..."
+    terminate(:bad_pop, [])
+  end
+  
   def handle_call(:pop, _from, [ first | rest ]) do
     {:reply, first, rest}
   end
   
   def handle_cast({:push, value}, current_list) do
     {:noreply, [value | current_list]}
+  end
+  
+  def terminate(:bad_pop, _state) do
+    System.halt
   end
 end
