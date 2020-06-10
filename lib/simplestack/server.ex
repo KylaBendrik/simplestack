@@ -13,6 +13,10 @@ defmodule Simplestack.Server do
     GenServer.cast __MODULE__, {:push, value}
   end
   
+  def view do
+    GenServer.cast __MODULE__, :view
+  end
+  
   # GenServer Implementation
   def init(init_list) do
     {:ok, init_list}
@@ -29,6 +33,11 @@ defmodule Simplestack.Server do
   
   def handle_cast({:push, value}, current_list) do
     {:noreply, [value | current_list]}
+  end
+  
+  def handle_cast(:view, current_list) do
+    IO.inspect(current_list)
+    {:noreply, current_list}
   end
   
   def terminate(:bad_pop, _state) do
